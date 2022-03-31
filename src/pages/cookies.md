@@ -30,7 +30,13 @@ The value of `document.cookie` consists of `name=value` pairs, delimeted by `;`.
 */
 
 const cookieParser = (cookie) => {
-  return cookie.split(';').map(x => x.split('=')).map(([k, ...vs]) => [k, vs.join('=')]);
+  return cookie.split(';')
+          .map(x => x.split('='))
+          .map(([k, ...vs]) => [k, vs.join('=')])
+          .reduce((acc, [k, v]) => {
+            acc[k.trim()] = decodeURIComponent(v);
+            return acc;
+        }, {});
 }
 
 ```
@@ -75,7 +81,3 @@ There are several options for cookies.
 - samesite
 - XSRF attack
 - httpOnly
-
-
-
-
